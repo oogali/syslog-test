@@ -9,11 +9,11 @@ end
 
 module Syslog
   class Application < Sinatra::Base
-		helpers do
-		  def ts_to_time(ts)
-		    e = ts.split('.');
-		    Time.at(e[0].to_i, e[1].to_i)
-		  end
+    helpers do
+      def ts_to_time(ts)
+        e = ts.split('.');
+        Time.at(e[0].to_i, e[1].to_i)
+      end
 
       def facility(fac)
         case fac.to_i
@@ -68,57 +68,57 @@ module Syslog
       def footer()
         haml :footer, :layout => false
       end
-		end
+    end
 
-		def open_db()
-		  db = TDB::new()
-		  if !db.open('/home/oogali/code/libevent/syslog.tct', TDB::OREADER | TDB::ONOLCK) then
-		    halt 500, 'could not open database: ' + db.errmsg(db.ecode)
-		  end
-
-		  db
-		end
-
-		def get_msg(msgid)
-		  if msgid.nil? then
-		    nil
-		  end
-
-		  db = open_db()
-		  l = db.get(msgid)
-		  db.close()
-
-		  if l.nil?
-		    nil
-		  else
-		    Log.new(msgid, l)
+    def open_db()
+      db = TDB::new()
+      if !db.open('/home/oogali/code/libevent/syslog.tct', TDB::OREADER | TDB::ONOLCK) then
+        halt 500, 'could not open database: ' + db.errmsg(db.ecode)
       end
-		end
 
-		def find_msg(needle)
-		  results = Array.new
+      db
+    end
 
-		  if needle.nil? or needle.empty? then
-		    nil?
-		  end
+    def get_msg(msgid)
+      if msgid.nil? then
+        nil
+      end
 
-		  db = open_db()
-		  q = TDBQRY::new(db)
-		  q.addcond('msg', TDBQRY::QCSTRINC, needle)
-		  q.setorder('ts', TDBQRY::QONUMDESC)
+      db = open_db()
+      l = db.get(msgid)
+      db.close()
 
-		  keys = q.search()
-		  keys.each do |key|
-		    results.push Log.new(key, db.get(key))
-		  end
+      if l.nil?
+        nil
+      else
+        Log.new(msgid, l)
+      end
+    end
 
-		  db.close()
-		  results
-		end
+    def find_msg(needle)
+      results = Array.new
 
-		get '/' do
-		  haml :index
-		end
+      if needle.nil? or needle.empty? then
+        nil?
+      end
+
+      db = open_db()
+      q = TDBQRY::new(db)
+      q.addcond('msg', TDBQRY::QCSTRINC, needle)
+      q.setorder('ts', TDBQRY::QONUMDESC)
+
+      keys = q.search()
+      keys.each do |key|
+        results.push Log.new(key, db.get(key))
+      end
+
+      db.close()
+      results
+    end
+
+    get '/' do
+      haml :index
+    end
 
     get '/styles/all.css' do
       content_type 'text/css', :charset => 'utf-8'
@@ -126,24 +126,24 @@ module Syslog
       sass :all
     end
 
-		get '/get/*' do
+    get '/get/*' do
       @msgid = params['splat'][0].to_i
-		  @log = get_msg(@msgid)
-		  haml :oneshot
-		end
+      @log = get_msg(@msgid)
+      haml :oneshot
+    end
 
-		def do_search(needle)
-		  @logs = find_msg(needle)
+    def do_search(needle)
+      @logs = find_msg(needle)
 
-		  haml :search
-		end
+      haml :search
+    end
 
-		get '/search/*' do
-		  do_search(params['splat'][0])
-		end
+    get '/search/*' do
+      do_search(params['splat'][0])
+    end
 
-		post '/search' do
-		  do_search(params[:search])
-		end
+    post '/search' do
+      do_search(params[:search])
+    end
   end
 end
