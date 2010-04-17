@@ -1,0 +1,9 @@
+%span.col
+  %a{:href => "/get/#{@log.msgid}"} #{@log.msgid}
+%span.colts= ts_to_time(@log.ts).to_s
+%span.colsrc= @log.src
+%span.col= facility(@log.facility)
+%span.col= severity(@log.severity)
+%span.colmsg= @log.msg.gsub('<', '&lt;').gsub('>', '&gt;')
+%br.clf
+

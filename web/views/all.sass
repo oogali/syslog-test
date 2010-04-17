@@ -1,0 +1,38 @@
+body, input, h1, h2, h3, h4, h5, h6, th, td
+  font-family: helvetica, arial, verdana, sans-serif
+
+body
+  font-size: 12px
+
+div#logs
+  width: 95%
+
+  div#loghdr
+    .logid, .ts, .src, .facility, .severity, .msg
+      display: block
+      font-weight: bold
+      text-align: left
+      width: 5%
+      float: left
+    .src
+      width: 8%
+    .ts
+      width: 15%
+    .msg
+      text-align: center
+      width: 60%
+
+  #logbody
+    .col, .colsrc, .colts, .colmsg
+      text-align: left
+      float: left
+      width: 5%
+    .colts
+      width: 15%
+    .colsrc
+      width: 8%
+    .colmsg
+      width: 60%
+
+.clf
+  clear: left

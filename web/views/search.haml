@@ -1,0 +1,17 @@
+- @title = 'search results'
+= header
+#logs
+  - if @logs.empty? || @logs.length <= 0
+    %p No messages found.
+  - else
+    #loghdr
+      #{@logs.length} message#{@logs.length == 1 ? '' : 's'} found.
+      %br
+      %br
+
+      = haml :logheader, :layout => false
+    #logbody
+      - @logs.each do |@log|
+        = haml :log, :layout => false
+%br
+= footer

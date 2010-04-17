@@ -1,0 +1,12 @@
+environment: development
+pid: /home/oogali/code/libevent/web/server.pid
+log: /home/oogali/code/libevent/web/server.log
+timeout: 5
+port: 4567
+max_conns: 128
+chdir: /home/oogali/code/libevent/web
+rackup: /home/oogali/code/libevent/web/config.ru
+max_persistent_conns: 32
+address: 0.0.0.0
+servers: 1
+daemonize: true

@@ -1,0 +1,12 @@
+- @title = 'hello'
+= header
+#search
+  %form{:method => 'post', :action => '/search'}
+    %input{:type => 'text', :id => 'search', :name => 'search', :size => 50}
+    %input{:type => 'submit', :id => 'btnsearch', :value => 'search!'}
+#recent
+  %p recent logs
+  - if @logs && logs.length > 0
+    - @logs.each do |@log|
+      = haml :log, :layout => false
+= footer
