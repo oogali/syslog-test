@@ -1,5 +1,4 @@
 - @title = "message \##{@msgid}"
-= header
 #logs
   - if @log.nil?
     %p No message with that ID.
@@ -9,4 +8,3 @@
     #logbody
       = haml :log, :layout => false
 %br
-= footer

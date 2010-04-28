@@ -1,5 +1,4 @@
 - @title = 'search results'
-= header
 #logs
   - if @logs.empty? || @logs.length <= 0
     %p No messages found.
@@ -14,4 +13,3 @@
       - @logs.each do |@log|
         = haml :log, :layout => false
 %br
-= footer
