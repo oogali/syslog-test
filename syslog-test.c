@@ -81,7 +81,7 @@ struct sockets *open_and_bind(int socktype, char *ip, uint16_t port)
       sock->fd = socket(AF_INET, SOCK_RAW, IPPROTO_IP);
       break;
     default:
-      fprintf(stderr, "open_and_bind: invalid socket type\n");
+      fprintf(stderr, "open_and_bind: unsupported socket type\n");
       sock->fd = -1;
   }
 
@@ -103,7 +103,7 @@ struct sockets *open_and_bind(int socktype, char *ip, uint16_t port)
       sock->addr.sin_port = htons(port);
       break;
     default:
-      fprintf(stderr, "open_and_bind: invalid socket type (memory corruption?)\n");
+      fprintf(stderr, "open_and_bind: (memory corruption?)\n");
       free(sock);
       return NULL;
   }
@@ -143,7 +143,7 @@ int log_message(char *src_ip, struct timeval tv, uint16_t priority, char *msg)
   bzero(&pk, sizeof(pk));
   snprintf(pk, sizeof(pk), "%ld", (long)tctdbgenuid(tdb));
 
-  /* zero out buffer, store string reprensentation of timestamp */
+  /* zero out buffer, store string representation of timestamp */
   bzero(&ts, sizeof(ts));
   snprintf(ts, sizeof(ts), "%ld.%09ld", tv.tv_sec, tv.tv_usec);
 
@@ -237,9 +237,15 @@ void read_socket_data(int fd, short event_type, void *s)
 
   /* walk string, find priority, convert to long */
   if (buf[0] == '<') {
-    while(buf[i] != '>') {
+    while(i < sizeof(buf) && buf[i] != '>') {
       i++;
     }
+    
+    if (i >= sizeof(buf)) {
+      /* end of buffer reached without finding '>' */
+      break;
+    }
+
     end = buf + i;
     priority = strtol(buf + 1, &end, 10);
   }
