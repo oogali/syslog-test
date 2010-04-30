@@ -1,12 +1,19 @@
 %html
   %head
-    %title= "idle pattern syslog:: #{@title || 'no title'}"
+    %title= "oo syslog:: #{@title || 'no title'}"
     %link{:rel => 'stylesheet', :href => "/styles/all.css?#{Time.new.to_f}", :type => 'text/css', :media => 'all'} 
   %body
     #header
       %h3= 'client logging facility'
+    #nav
+      \[
+      %a{:href => '/'} home
+      \|
+      search:
+      %input{:type => 'text', :name => 'searchbox', :id => 'searchbox', :size => 20}
+      \]
 
     =yield
 
     #footer
-      &copy; copyright 2010. idle pattern communications, llc
+      &copy; copyright 2010. omachonu ogali.
